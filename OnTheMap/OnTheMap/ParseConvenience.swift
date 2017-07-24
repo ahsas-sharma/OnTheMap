@@ -8,9 +8,9 @@
 
 import Foundation
 
+// MARK: - Parse Convenience - 
+
 extension APIClient {
-    
-    
     
     /// Get a list of student locations
     ///
@@ -18,9 +18,9 @@ extension APIClient {
   
     func getStudentLocations(_ completionHandlerForStudentLocations: @escaping (_ result: [String:AnyObject]?, _ error: NSError?) -> Void) {
         
-        let request = self.buildRequestWith(methodType: APIConstants.HTTP.MethodType.get, host: .Parse, parameters: [:], headers: parseHeaders, requestBody: nil)
+        let request = self.buildRequestWith(methodType: .get, host: .Parse, parameters: [:], headers: APIConstants.Parse.HTTPHeaders, requestBody: nil)
         
-        _ = self.taskForMethod(request: request, completionHandlerForTask: {
+        _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
             (result, error) in
             
             guard error == nil else {
@@ -43,10 +43,11 @@ extension APIClient {
     }
     
     func getStudentLocationWith(whereQuery: String, completionHandlerForStudentLocations: @escaping (_ result: [String:AnyObject]?, _ error: NSError?) -> Void) {
-  
-        let request = self.buildRequestWith(methodType: APIConstants.HTTP.MethodType.get, host: .Parse, parameters: [APIConstants.Parse.ParameterKeys.whereKey: whereQuery], headers: parseHeaders, requestBody: nil)
+
+ 
+        let request = self.buildRequestWith(methodType: .get, host: .Parse, parameters: [APIConstants.Parse.ParameterKeys.whereKey: whereQuery], headers: APIConstants.Parse.HTTPHeaders, requestBody: nil)
         
-        _ = self.taskForMethod(request: request, completionHandlerForTask: {
+        _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
             (result, error) in
             
             guard error == nil else {
@@ -72,10 +73,10 @@ extension APIClient {
         
         let body = "{\"uniqueKey\":\"99999\",\"firstName\": \"Romit\",\"lastName\": \"Humagai\",\"mapString\": \"Mountain View, CA\",\"mediaURL\": \"https://someurl.com\",\"latitude\": 37.386052,\"longitude\": -122.083851}"
         
-        let request = self.buildRequestWith(methodType: APIConstants.HTTP.MethodType.post, host: .Parse, parameters: nil, headers: parseHeaders, requestBody: body)
+        let request = self.buildRequestWith(methodType: .post, host: .Parse, parameters: nil, headers:  APIConstants.Parse.HTTPHeaders, requestBody: body)
         
         
-        _ = self.taskForMethod(request: request, completionHandlerForTask: {
+        _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
             (result, error) in
             
             guard error == nil else {
@@ -98,34 +99,31 @@ extension APIClient {
 
     }
     
-    func putStudentLocationForObjectId(_ objectId: String, completionHandlerForPost:  @escaping (_ result: [String:AnyObject]?, _ error: NSError?) -> Void) {
+    func putStudentLocationForObjectId(_ objectId: String, completionHandlerForPut:  @escaping (_ result: [String:AnyObject]?, _ error: NSError?) -> Void) {
         
         let body = "{\"uniqueKey\":\"101799\",\"firstName\": \"Kaun Sa Sas?\",\"lastName\": \"SharmaJi\",\"mapString\": \"Mountain View, CA\",\"mediaURL\": \"https://someurl.com\",\"latitude\": 37.386052,\"longitude\": -122.083851}"
         
-        var request = self.buildRequestWith(methodType: APIConstants.HTTP.MethodType.put, host: .Parse, parameters: nil, headers: parseHeaders, requestBody: body)
+        let request = self.buildRequestWith(methodType: .put, host: .Parse, parameters: nil, headers:  APIConstants.Parse.HTTPHeaders, requestBody: body)
         
         request.url?.appendPathComponent(objectId)
         print("PUT Request URL: \(String(describing: request.url?.absoluteString))")
         
-        _ = self.taskForMethod(request: request, completionHandlerForTask: {
+        _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
             (result, error) in
             
             guard error == nil else {
                 print("Error :\(String(describing: error))")
-                completionHandlerForPost(nil, error)
+                completionHandlerForPut(nil, error)
                 return
             }
             
             guard let result = result as? [String: AnyObject]else {
                 print("Did not get any result")
-                completionHandlerForPost(nil, nil)
+                completionHandlerForPut(nil, nil)
                 return
             }
             
-            completionHandlerForPost(result, nil)
-            
-            print("Result = :\(result)")
-            
+            completionHandlerForPut(result, nil)
         })
         
     }

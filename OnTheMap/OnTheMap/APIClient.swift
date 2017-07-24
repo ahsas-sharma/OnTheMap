@@ -13,9 +13,14 @@ class APIClient : NSObject {
     // MARK:- Properties
     
     var session = URLSession.shared
-    let parseHeaders = [APIConstants.HTTP.HeaderKeys.parseApiKey:APIConstants.Parse.apiKey, APIConstants.HTTP.HeaderKeys.parseAppId: APIConstants.Parse.applicationID, APIConstants.HTTP.HeaderKeys.contentType:APIConstants.HTTP.HeaderValues.json]
-    typealias completionHandler = (_ result: AnyObject?, _ error: NSError?) -> Void
     
+    var userId: String?
+    var sessionId: String?
+    
+    let parseHeaders = [APIConstants.HTTP.HeaderKeys.parseApiKey:APIConstants.Parse.apiKey, APIConstants.HTTP.HeaderKeys.parseAppId: APIConstants.Parse.applicationID, APIConstants.HTTP.HeaderKeys.contentType:APIConstants.HTTP.HeaderValues.json]
+    
+    typealias completionHandler = (_ result: AnyObject?, _ error: NSError?) -> Void
+        
     // MARK:- Shared APIClient Instance
     
     class func sharedInstance() -> APIClient {
@@ -50,7 +55,14 @@ class APIClient : NSObject {
                 return
             }
             
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForTask)
+            // If the host is Udacity, get the subset of data and then call the convertData function
+            if request.url?.host == APIConstants.Udacity.host {
+                let range = Range(5..<data.count)
+                let newData = data.subdata(in: range) /* subset response data! */
+                self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForTask)
+            } else {
+                self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForTask)
+            }
             
         })
         
@@ -58,12 +70,12 @@ class APIClient : NSObject {
         return task
     }
     
-    func buildRequestWith(methodType: String, host: APIConstants.Host, parameters: [String: String]?, headers:[String:String], requestBody: String?) -> URLRequest {
+    func buildRequestWith(methodType: APIConstants.HTTP.MethodType, host: APIConstants.Host, parameters: [String: String]?, headers:[String:String], requestBody: String?) -> NSMutableURLRequest {
         
         // create a new request and set the httpMethod
         let request = NSMutableURLRequest(url: self.buildURLFor(host: host, parameters: parameters))
         
-        request.httpMethod = methodType
+        request.httpMethod = methodType.rawValue
         print("Request Method: \(request.httpMethod)")
         
         // check if there is any json data is provided
@@ -78,8 +90,10 @@ class APIClient : NSObject {
         
         print("Request Headers : \(String(describing: request.allHTTPHeaderFields))")
         
-        return request as URLRequest
+        return request
     }
+    
+    
     
     // MARK:- Helper functions
     
@@ -93,9 +107,9 @@ class APIClient : NSObject {
             components.host =  APIConstants.Parse.host
             components.path =  APIConstants.Parse.path
         case .Udacity:
-            components.scheme = APIConstants.Parse.scheme
-            components.host =  APIConstants.Parse.host
-            components.path =  APIConstants.Parse.path
+            components.scheme = APIConstants.Udacity.scheme
+            components.host =  APIConstants.Udacity.host
+            components.path =  APIConstants.Udacity.basePath
         }
         
         if let parameters = parameters {

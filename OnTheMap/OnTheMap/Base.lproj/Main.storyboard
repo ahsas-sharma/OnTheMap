@@ -27,23 +27,23 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="46M-1j-8bH">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="78.5"/>
-                                        <state key="normal" title="GET Student Locations"/>
+                                        <state key="normal" title="Get SessionID"/>
                                         <connections>
-                                            <action selector="printGetStudentLocations" destination="BYZ-38-t0r" eventType="touchUpInside" id="dUq-wF-hsn"/>
+                                            <action selector="getSessionId" destination="BYZ-38-t0r" eventType="touchUpInside" id="cFX-CO-8sc"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40B-4k-Mhx">
                                         <rect key="frame" x="0.0" y="78.5" width="375" height="78.5"/>
-                                        <state key="normal" title="GET Single Student Location"/>
+                                        <state key="normal" title="Delete Session"/>
                                         <connections>
-                                            <action selector="printGetStudentLocation" destination="BYZ-38-t0r" eventType="touchUpInside" id="bEf-fw-16a"/>
+                                            <action selector="performLogout" destination="BYZ-38-t0r" eventType="touchUpInside" id="sWm-ri-JcE"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5uB-ys-Nj1">
                                         <rect key="frame" x="0.0" y="157" width="375" height="78"/>
-                                        <state key="normal" title="POST Sample Location"/>
+                                        <state key="normal" title="Get User Data"/>
                                         <connections>
-                                            <action selector="printPostStudentLocation" destination="BYZ-38-t0r" eventType="touchUpInside" id="2YE-aT-hrz"/>
+                                            <action selector="getPublicDataForUser" destination="BYZ-38-t0r" eventType="touchUpInside" id="u14-fX-ZMD"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ABE-mA-44R">

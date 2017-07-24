@@ -16,6 +16,7 @@
 		891766BD1F2186A1003ACCE7 /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891766BC1F2186A1003ACCE7 /* StudentLocation.swift */; };
 		891766BF1F218878003ACCE7 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891766BE1F218878003ACCE7 /* APIClient.swift */; };
 		891766C11F21FD14003ACCE7 /* ParseConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891766C01F21FD14003ACCE7 /* ParseConvenience.swift */; };
+		89705A891F25A5EB00F15BAC /* UdacityConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89705A881F25A5EB00F15BAC /* UdacityConvenience.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		891766BC1F2186A1003ACCE7 /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		891766BE1F218878003ACCE7 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		891766C01F21FD14003ACCE7 /* ParseConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConvenience.swift; sourceTree = "<group>"; };
+		89705A881F25A5EB00F15BAC /* UdacityConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConvenience.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				891766BE1F218878003ACCE7 /* APIClient.swift */,
 				891766BC1F2186A1003ACCE7 /* StudentLocation.swift */,
 				891766C01F21FD14003ACCE7 /* ParseConvenience.swift */,
+				89705A881F25A5EB00F15BAC /* UdacityConvenience.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 				891766A71F20AED8003ACCE7 /* ViewController.swift in Sources */,
 				891766A51F20AED8003ACCE7 /* AppDelegate.swift in Sources */,
 				891766BF1F218878003ACCE7 /* APIClient.swift in Sources */,
+				89705A891F25A5EB00F15BAC /* UdacityConvenience.swift in Sources */,
 				891766B91F20CE2F003ACCE7 /* APIConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,6 +354,7 @@
 				891766B51F20AED8003ACCE7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

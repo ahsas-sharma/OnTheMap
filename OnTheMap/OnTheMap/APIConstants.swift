@@ -29,6 +29,10 @@ struct APIConstants {
         // full url if needed
         static let url = "https://parse.udacity.com/parse/classes/StudentLocation"
         
+        // headers
+        static let HTTPHeaders = [APIConstants.HTTP.HeaderKeys.parseApiKey:APIConstants.Parse.apiKey, APIConstants.HTTP.HeaderKeys.parseAppId: APIConstants.Parse.applicationID, APIConstants.HTTP.HeaderKeys.contentType:APIConstants.HTTP.HeaderValues.json]
+
+        
         // MARK: - Parameter Keys
         
         struct ParameterKeys {
@@ -70,8 +74,9 @@ struct APIConstants {
         
         static let scheme = "https"
         static let host = "www.udacity.com"
-        static let pathForSession = "/api/session"
-        static let pathForUserData = "api/users/{userId}"
+        static let basePath = "/api"
+        static let sessionPath = "/session"
+        static let userDataPath = "/users"
         
         // full urls if needed
         static let urlForSession = "https://www.udacity.com/api/session"
@@ -81,6 +86,9 @@ struct APIConstants {
         
         static let facebookAppID = "365362206864879"
         static let facebookSchemeSuffix = "onthemap"
+        
+        static let HTTPHeaders = [APIConstants.HTTP.HeaderKeys.accept:APIConstants.HTTP.HeaderValues.json, APIConstants.HTTP.HeaderKeys.contentType:APIConstants.HTTP.HeaderValues.json]
+
         
         // MARK: - Parameter Keys
         
@@ -104,6 +112,8 @@ struct APIConstants {
             static let expiration = "expiration"
             
         }
+        
+        
     }
     
     // MARK: - HTTP Headers -
@@ -130,13 +140,14 @@ struct APIConstants {
         
         // MARK: - Methods
         
-        struct MethodType {
-            static let get = "GET"
-            static let post = "POST"
-            static let put = "PUT"
-            static let delete = "DELETE"
+        enum MethodType : String {
+            case get = "GET"
+            case post = "POST"
+            case put = "PUT"
+            case delete = "DELETE"
         }
     }
+    
 }
 
 

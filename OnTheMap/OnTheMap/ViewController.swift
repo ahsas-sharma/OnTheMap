@@ -89,8 +89,38 @@ class ViewController: UIViewController {
     
     @IBAction func printPutStudentLocation() {
         
-        let _ = apiClient.putStudentLocationForObjectId("gIt0a2Vref", completionHandlerForPost: {
+        let _ = apiClient.putStudentLocationForObjectId("gIt0a2Vref", completionHandlerForPut: {
             (result, error) in
+            
+        })
+        
+    }
+    
+    @IBAction func getSessionId() {
+        _ = apiClient.getSessionId(loginDetails: "", completionHandlerForGetSessionId: {
+        (success, userId, sessionId, error) in
+            
+            guard error == nil else {
+                DispatchQueue.main.async {
+                    // perform failure UI updates
+                }
+                return
+            }
+            
+            self.apiClient.sessionId = sessionId
+            self.apiClient.userId = userId
+            
+            DispatchQueue.main.async {
+                // perform success UI updates
+                self.textView.text = "UserId: \(String(describing: userId)) SessionId: \(String(describing: sessionId))"
+            }
+
+        })
+    }
+    
+    @IBAction func performLogout() {
+        _ = apiClient.deleteSession({
+            (success, error) in
             guard error == nil else {
                 DispatchQueue.main.async {
                     // perform failure UI updates
@@ -100,10 +130,32 @@ class ViewController: UIViewController {
             
             DispatchQueue.main.async {
                 // perform success UI updates
+                self.textView.text = "Deleted Session"
+            }
+
+        })
+    }
+    
+    @IBAction func getPublicDataForUser() {
+        guard let userId = self.apiClient.userId else {
+            print("No userId found.")
+            return
+        }
+        _ = apiClient.getPublicDataForUser(id: userId, completionHandlerForGetPublicData: { (success, result, error) in
+            
+            guard error == nil else {
+                DispatchQueue.main.async {
+                    // perform failure UI updates
+                }
+                return
             }
             
+            DispatchQueue.main.async {
+                // perform success UI updates
+                self.textView.text = "\(String(describing:result))"
+            }
+
         })
-        
     }
 
 }
