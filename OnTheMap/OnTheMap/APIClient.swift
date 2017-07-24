@@ -16,6 +16,7 @@ class APIClient : NSObject {
     
     var userId: String?
     var sessionId: String?
+    var fbAuthToken: String?
     
     let parseHeaders = [APIConstants.HTTP.HeaderKeys.parseApiKey:APIConstants.Parse.apiKey, APIConstants.HTTP.HeaderKeys.parseAppId: APIConstants.Parse.applicationID, APIConstants.HTTP.HeaderKeys.contentType:APIConstants.HTTP.HeaderValues.json]
     

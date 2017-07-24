@@ -45,6 +45,39 @@ extension APIClient {
         
     }
     
+    func getSessionIdWithFacebook(accessToken: String, completionHandlerForGetSessionId: @escaping (_ success: Bool,_ userId: String? ,_ sessionId: String?, _ error: NSError?) -> Void) {
+        
+        let body = "{\"facebook_mobile\": {\"access_token\": \"\(accessToken)\"}}"
+        
+        let request = self.buildRequestWith(methodType: .post, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: body)
+        
+        // Set session path
+        request.url = request.url?.appendingPathComponent(APIConstants.Udacity.sessionPath)
+        
+        _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
+            (result, error) in
+            
+            guard error == nil else {
+                completionHandlerForGetSessionId(false, nil, nil, error)
+                return
+            }
+            
+            guard let result = result as? [String: AnyObject],
+                let sessionDict = result[APIConstants.Udacity.JSONResponseKeys.session] as? [String: AnyObject],
+                let sessionId = sessionDict[APIConstants.Udacity.JSONResponseKeys.id] as? String,
+                let accountDict = result[APIConstants.Udacity.JSONResponseKeys.account] as? [String: AnyObject],
+                let userId = accountDict[APIConstants.Udacity.JSONResponseKeys.key] as? String
+                else {
+                    completionHandlerForGetSessionId(false, nil, nil, nil)
+                    return
+            }
+            
+            completionHandlerForGetSessionId(true, userId, sessionId, nil)
+            
+        })
+        
+    }
+    
     func deleteSession(_ completionHandlerForDeleteId: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
         
         let body = "{\"udacity\": {\"username\": \"sharma.ahsas@gmail.com\", \"password\": \"nanakk01\"}}"
@@ -71,10 +104,10 @@ extension APIClient {
                 return
             }
             
-            guard let result = result as? [String: AnyObject] else {
-                completionHandlerForDeleteId(false, nil)
-                return
-            }
+//            guard let result = result as? [String: AnyObject] else {
+//                completionHandlerForDeleteId(false, nil)
+//                return
+//            }
             
             self.sessionId = nil
             self.userId = nil
