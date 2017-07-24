@@ -49,4 +49,8 @@ struct StudentInformation {
         self.updatedAt = updatedAt as! String
 
     }
+    
+   func stringForHTTPBody() -> String {
+    return "{\"uniqueKey\": \"\(self.uniqueKey)\", \"firstName\": \"\(self.firstName)\", \"lastName\": \"\(self.lastName)\",\"mapString\": \"\(self.mapString)\", \"mediaURL\": \"\(self.mediaURL)\",\"latitude\": \(self.latitude), \"longitude\": \(self.longitude)}"
+    }
 }

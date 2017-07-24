@@ -10,8 +10,12 @@ import Foundation
 
 struct APIConstants {
     
-    // MARK: - Parse - 
-    
+    enum Host {
+        case Parse, Udacity
+    }
+
+    // MARK: - Parse -
+
     struct Parse {
         
         static let applicationID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
@@ -21,6 +25,9 @@ struct APIConstants {
         static let scheme = "https"
         static let host = "parse.udacity.com"
         static let path = "/parse/classes/StudentLocation"
+        
+        // full url if needed
+        static let url = "https://parse.udacity.com/parse/classes/StudentLocation"
         
         // MARK: - Parameter Keys
         
@@ -64,7 +71,11 @@ struct APIConstants {
         static let scheme = "https"
         static let host = "www.udacity.com"
         static let pathForSession = "/api/session"
-        static let pathForUserData = "api/users/" // Append userId at the end
+        static let pathForUserData = "api/users/{userId}"
+        
+        // full urls if needed
+        static let urlForSession = "https://www.udacity.com/api/session"
+        static let urlForUserData = "https://www.udacity.com/api/users/"
         
         // MARK: - Facebook
         
@@ -97,11 +108,11 @@ struct APIConstants {
     
     // MARK: - HTTP Headers -
     
-    struct HTTPHeaders {
+    struct HTTP {
         
         // MARK: - Keys
         
-        struct Keys {
+        struct HeaderKeys {
             
             static let parseAppId = "X-Parse-Application-Id"
             static let parseApiKey = "X-Parse-REST-API-Key"
@@ -113,8 +124,17 @@ struct APIConstants {
         
         // MARK: - Values 
         
-        struct Values {
+        struct HeaderValues {
             static let json = "application/json"
+        }
+        
+        // MARK: - Methods
+        
+        struct MethodType {
+            static let get = "GET"
+            static let post = "POST"
+            static let put = "PUT"
+            static let delete = "DELETE"
         }
     }
 }
