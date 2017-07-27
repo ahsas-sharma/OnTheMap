@@ -14,11 +14,11 @@ extension APIClient {
     
     /// Get a list of student locations
     ///
-    /// - Parameter completionHandlerForStudentLocations: Returns the result or error, if any
+    /// - Parameter completionHandlerForStudentLocations: Returns an array of results or error, if any
   
-    func getStudentLocations(_ completionHandlerForStudentLocations: @escaping (_ result: [String:AnyObject]?, _ error: NSError?) -> Void) {
+    func getStudentLocations(_ completionHandlerForStudentLocations: @escaping (_ result: [[String:AnyObject]]?, _ error: NSError?) -> Void) {
         
-        let request = self.buildRequestWith(methodType: .get, host: .Parse, parameters: [:], headers: APIConstants.Parse.HTTPHeaders, requestBody: nil)
+        let request = self.buildRequestWith(methodType: .get, host: .Parse, parameters: [APIConstants.Parse.ParameterKeys.limit:"100" , APIConstants.Parse.ParameterKeys.order: "-updatedAt"], headers: APIConstants.Parse.HTTPHeaders, requestBody: nil)
         
         _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
             (result, error) in
@@ -29,13 +29,13 @@ extension APIClient {
                 return
             }
             
-            guard let result = result as? [String: AnyObject]else {
+            guard let result = result as? [String: AnyObject], let results = result[APIConstants.Parse.JSONResponseKeys.results] as? [[String: AnyObject]]else {
                 print("Did not get any result")
                 completionHandlerForStudentLocations(nil, nil)
                 return
             }
             
-            completionHandlerForStudentLocations(result, nil)
+            completionHandlerForStudentLocations(results, nil)
 
             print("Result = :\(result)")
             

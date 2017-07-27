@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class APIClient : NSObject {
     
@@ -14,14 +15,17 @@ class APIClient : NSObject {
     
     var session = URLSession.shared
     
-    var userId: String?
-    var sessionId: String?
-    var fbAuthToken: String?
+    static var userId: String?
+    static var sessionId: String?
+    static var facebookAuthToken: String?
+    
+    static var studentLocations = [StudentInformation]()
+    static var locationsFetchInProgress: Bool = false
     
     let parseHeaders = [APIConstants.HTTP.HeaderKeys.parseApiKey:APIConstants.Parse.apiKey, APIConstants.HTTP.HeaderKeys.parseAppId: APIConstants.Parse.applicationID, APIConstants.HTTP.HeaderKeys.contentType:APIConstants.HTTP.HeaderValues.json]
     
     typealias completionHandler = (_ result: AnyObject?, _ error: NSError?) -> Void
-        
+    
     // MARK:- Shared APIClient Instance
     
     class func sharedInstance() -> APIClient {
@@ -40,19 +44,19 @@ class APIClient : NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                self.sendError("There was an error with your request: \(error!)", domain: "taskForMethod", completionHandler: completionHandlerForTask)
+                self.sendError("There was an error with your request: \(error!)", code: 1, domain: "taskForMethod", completionHandler: completionHandlerForTask)
                 return
             }
             
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                self.sendError("Your request returned a status code other than 2xx!. Code: \(String(describing: (response as? HTTPURLResponse)?.statusCode))", domain: "taskForMethod", completionHandler: completionHandlerForTask)
+                self.sendError("Your request returned a status code other than 2xx!. Code: \(String(describing: (response as? HTTPURLResponse)?.statusCode))", code: ((response as? HTTPURLResponse)?.statusCode)!, domain: "taskForMethod", completionHandler: completionHandlerForTask)
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                self.sendError("No data was returned by the request!", domain: "taskForMethod", completionHandler: completionHandlerForTask)
+                self.sendError("No data was returned by the request!", code: 2, domain: "taskForMethod", completionHandler: completionHandlerForTask)
                 return
             }
             
@@ -75,22 +79,19 @@ class APIClient : NSObject {
         
         // create a new request and set the httpMethod
         let request = NSMutableURLRequest(url: self.buildURLFor(host: host, parameters: parameters))
-        
         request.httpMethod = methodType.rawValue
-        print("Request Method: \(request.httpMethod)")
         
         // check if there is any json data is provided
         if let requestBody = requestBody {
             request.httpBody = requestBody.data(using: .utf8)
-            print("Request HTTPBody : \(String(describing: request.httpBody))")
         }
         // add header fields and their values
         for header in headers {
             request.addValue(header.value, forHTTPHeaderField: header.key)
         }
         
-        print("Request Headers : \(String(describing: request.allHTTPHeaderFields))")
-        
+        // set request timeout to 10 seconds
+        request.timeoutInterval = 10.0
         return request
     }
     
@@ -148,13 +149,14 @@ class APIClient : NSObject {
         
         completionHandlerForConvertData(parsedResult, nil)
     }
-      
+    
     // send error for domain
-    private func sendError(_ error: String, domain: String, completionHandler: completionHandler) {
-        print("Sending Error :\(error)")
+    private func sendError(_ error: String, code: Int, domain: String, completionHandler: completionHandler) {
+        print(error)
         let userInfo = [NSLocalizedDescriptionKey : error]
-        completionHandler(nil, NSError(domain: domain, code: 1, userInfo: userInfo))
+        completionHandler(nil, NSError(domain: domain, code: code, userInfo: userInfo))
         
     }
+    
 }
 
