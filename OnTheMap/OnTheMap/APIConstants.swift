@@ -146,7 +146,13 @@ struct APIConstants {
             case put = "PUT"
             case delete = "DELETE"
         }
+        
+        // For errors while building a request
+        static let badRequestError = NSError(domain: "buildRequestWith", code: 400, userInfo: nil)
     }
+    
+    
+
     
 }
 

@@ -18,7 +18,10 @@ extension APIClient {
   
     func getStudentLocations(_ completionHandlerForStudentLocations: @escaping (_ result: [[String:AnyObject]]?, _ error: NSError?) -> Void) {
         
-        let request = self.buildRequestWith(methodType: .get, host: .Parse, parameters: [APIConstants.Parse.ParameterKeys.limit:"100" , APIConstants.Parse.ParameterKeys.order: "-updatedAt"], headers: APIConstants.Parse.HTTPHeaders, requestBody: nil)
+        guard let request = self.buildRequestWith(methodType: .get, host: .Parse, parameters: [APIConstants.Parse.ParameterKeys.limit:"100" , APIConstants.Parse.ParameterKeys.order: "-updatedAt"], headers: APIConstants.Parse.HTTPHeaders, requestBody: nil) else {
+            completionHandlerForStudentLocations(nil, APIConstants.HTTP.badRequestError)
+            return
+        }
         
         _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
             (result, error) in
@@ -28,24 +31,25 @@ extension APIClient {
                 completionHandlerForStudentLocations(nil, error)
                 return
             }
-            
-            guard let result = result as? [String: AnyObject], let results = result[APIConstants.Parse.JSONResponseKeys.results] as? [[String: AnyObject]]else {
-                print("Did not get any result")
-                completionHandlerForStudentLocations(nil, nil)
+
+            guard let result = result as? [String: AnyObject], let results = result[APIConstants.Parse.JSONResponseKeys.results] as? [[String: AnyObject]], results.count > 0 else {
+                debugPrint("Could not fetch results")
+                let error = NSError(domain: "getStudentLocations", code: 404, userInfo: nil)
+                completionHandlerForStudentLocations(nil, error)
                 return
             }
             
             completionHandlerForStudentLocations(results, nil)
-
-            print("Result = :\(result)")
-            
         })
     }
     
     func getStudentLocationWith(whereQuery: String, completionHandlerForStudentLocations: @escaping (_ result: [String:AnyObject]?, _ error: NSError?) -> Void) {
 
  
-        let request = self.buildRequestWith(methodType: .get, host: .Parse, parameters: [APIConstants.Parse.ParameterKeys.whereKey: whereQuery], headers: APIConstants.Parse.HTTPHeaders, requestBody: nil)
+        guard let request = self.buildRequestWith(methodType: .get, host: .Parse, parameters: [APIConstants.Parse.ParameterKeys.whereKey: whereQuery], headers: APIConstants.Parse.HTTPHeaders, requestBody: nil) else {
+            completionHandlerForStudentLocations(nil, APIConstants.HTTP.badRequestError)
+            return
+        }
         
         _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
             (result, error) in
@@ -73,7 +77,10 @@ extension APIClient {
         
         let body = "{\"uniqueKey\":\"99999\",\"firstName\": \"Romit\",\"lastName\": \"Humagai\",\"mapString\": \"Mountain View, CA\",\"mediaURL\": \"https://someurl.com\",\"latitude\": 37.386052,\"longitude\": -122.083851}"
         
-        let request = self.buildRequestWith(methodType: .post, host: .Parse, parameters: nil, headers:  APIConstants.Parse.HTTPHeaders, requestBody: body)
+        guard let request = self.buildRequestWith(methodType: .post, host: .Parse, parameters: nil, headers:  APIConstants.Parse.HTTPHeaders, requestBody: body) else {
+            completionHandlerForPost(nil, APIConstants.HTTP.badRequestError)
+            return
+        }
         
         
         _ = self.taskForMethod(request: request as URLRequest, completionHandlerForTask: {
@@ -103,7 +110,10 @@ extension APIClient {
         
         let body = "{\"uniqueKey\":\"101799\",\"firstName\": \"Kaun Sa Sas?\",\"lastName\": \"SharmaJi\",\"mapString\": \"Mountain View, CA\",\"mediaURL\": \"https://someurl.com\",\"latitude\": 37.386052,\"longitude\": -122.083851}"
         
-        let request = self.buildRequestWith(methodType: .put, host: .Parse, parameters: nil, headers:  APIConstants.Parse.HTTPHeaders, requestBody: body)
+        guard let request = self.buildRequestWith(methodType: .put, host: .Parse, parameters: nil, headers:  APIConstants.Parse.HTTPHeaders, requestBody: body) else {
+            completionHandlerForPut(nil, APIConstants.HTTP.badRequestError)
+            return
+        }
         
         request.url?.appendPathComponent(objectId)
         print("PUT Request URL: \(String(describing: request.url?.absoluteString))")

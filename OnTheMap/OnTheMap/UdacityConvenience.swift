@@ -14,7 +14,10 @@ extension APIClient {
     
     func getSessionId(loginDetails: String, completionHandlerForGetSessionId: @escaping (_ success: Bool,_ userId: String? ,_ sessionId: String?, _ error: NSError?) -> Void) {
                 
-        let request = self.buildRequestWith(methodType: .post, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: loginDetails)
+        guard let request = self.buildRequestWith(methodType: .post, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: loginDetails) else {
+            completionHandlerForGetSessionId(false, nil, nil, APIConstants.HTTP.badRequestError)
+            return
+        }
         
         // Set session path
         request.url = request.url?.appendingPathComponent(APIConstants.Udacity.sessionPath)
@@ -47,7 +50,10 @@ extension APIClient {
         
         let body = "{\"facebook_mobile\": {\"access_token\": \"\(accessToken)\"}}"
         
-        let request = self.buildRequestWith(methodType: .post, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: body)
+        guard let request = self.buildRequestWith(methodType: .post, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: body) else {
+            completionHandlerForGetSessionId(false, nil, nil, APIConstants.HTTP.badRequestError)
+            return
+        }
         
         // Set session path
         request.url = request.url?.appendingPathComponent(APIConstants.Udacity.sessionPath)
@@ -80,7 +86,10 @@ extension APIClient {
         
         let body = "{\"udacity\": {\"username\": \"sharma.ahsas@gmail.com\", \"password\": \"nanakk01\"}}"
         
-        let request = self.buildRequestWith(methodType: .delete, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: body)
+        guard let request = self.buildRequestWith(methodType: .delete, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: body) else {
+            completionHandlerForDeleteId(false, APIConstants.HTTP.badRequestError)
+            return
+        }
         
         // Set session path
         request.url = request.url?.appendingPathComponent(APIConstants.Udacity.sessionPath)
@@ -102,11 +111,7 @@ extension APIClient {
                 return
             }
             
-//            guard let result = result as? [String: AnyObject] else {
-//                completionHandlerForDeleteId(false, nil)
-//                return
-//            }
-            
+            debugPrint("Deleted Udacity Session successfully.")
             APIClient.sessionId = nil
             APIClient.userId = nil
             completionHandlerForDeleteId(true, nil)
@@ -117,7 +122,10 @@ extension APIClient {
     
     func getPublicDataForUser(id: String, completionHandlerForGetPublicData: @escaping (_ success: Bool, _ result: [String: AnyObject]?, _ error: NSError?) -> Void ) {
         
-        let request = self.buildRequestWith(methodType: .get, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: nil)
+        guard let request = self.buildRequestWith(methodType: .get, host: .Udacity, parameters: nil, headers: APIConstants.Udacity.HTTPHeaders, requestBody: nil) else {
+            completionHandlerForGetPublicData(false, nil, APIConstants.HTTP.badRequestError)
+            return
+        }
         
         // Set path to get public data for user
         request.url = request.url?.appendingPathComponent(APIConstants.Udacity.userDataPath).appendingPathComponent(id)

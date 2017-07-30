@@ -23,10 +23,10 @@
 		89705A921F276DE300F15BAC /* PostInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89705A911F276DE300F15BAC /* PostInformationViewController.swift */; };
 		89705A961F27FA4600F15BAC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89705A951F27FA4600F15BAC /* Constants.swift */; };
 		89705A981F280E2300F15BAC /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89705A971F280E2300F15BAC /* Utils.swift */; };
-		89705A9A1F2859E400F15BAC /* CustomLoginAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89705A991F2859E400F15BAC /* CustomLoginAlertView.xib */; };
-		89705A9C1F285FA000F15BAC /* CustomLoginAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89705A9B1F285FA000F15BAC /* CustomLoginAlertView.swift */; };
+		89705A9C1F285FA000F15BAC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89705A9B1F285FA000F15BAC /* LoadingView.swift */; };
 		89705A9E1F294EA200F15BAC /* MapTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89705A9D1F294EA200F15BAC /* MapTabViewController.swift */; };
 		89705AA31F29597800F15BAC /* ListTabTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89705AA21F29597800F15BAC /* ListTabTableViewController.swift */; };
+		899B18751F2A1E9D0087679A /* loading_fast.gif in Resources */ = {isa = PBXBuildFile; fileRef = 899B18741F2A1E9D0087679A /* loading_fast.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,11 +48,11 @@
 		89705A911F276DE300F15BAC /* PostInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostInformationViewController.swift; sourceTree = "<group>"; };
 		89705A951F27FA4600F15BAC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		89705A971F280E2300F15BAC /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		89705A991F2859E400F15BAC /* CustomLoginAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomLoginAlertView.xib; sourceTree = "<group>"; };
-		89705A9B1F285FA000F15BAC /* CustomLoginAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomLoginAlertView.swift; sourceTree = "<group>"; };
+		89705A9B1F285FA000F15BAC /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		89705A9D1F294EA200F15BAC /* MapTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTabViewController.swift; sourceTree = "<group>"; };
 		89705A9F1F29522700F15BAC /* OnTheMap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OnTheMap.entitlements; sourceTree = "<group>"; };
 		89705AA21F29597800F15BAC /* ListTabTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTabTableViewController.swift; sourceTree = "<group>"; };
+		899B18741F2A1E9D0087679A /* loading_fast.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_fast.gif; sourceTree = "<group>"; };
 		CBE47831C13F363C20F5ADEE /* Pods-OnTheMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OnTheMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-OnTheMap/Pods-OnTheMap.release.xcconfig"; sourceTree = "<group>"; };
 		DB4A7BDDFBC280ADF613CE40 /* Pods-OnTheMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OnTheMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OnTheMap/Pods-OnTheMap.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,7 +99,6 @@
 		891766A31F20AED8003ACCE7 /* OnTheMap */ = {
 			isa = PBXGroup;
 			children = (
-				89705A9F1F29522700F15BAC /* OnTheMap.entitlements */,
 				89705A8A1F269B0E00F15BAC /* Frameworks */,
 				891766A41F20AED8003ACCE7 /* AppDelegate.swift */,
 				891766B71F20CE11003ACCE7 /* Model */,
@@ -115,8 +114,9 @@
 			children = (
 				891766A81F20AED8003ACCE7 /* Main.storyboard */,
 				891766AD1F20AED8003ACCE7 /* LaunchScreen.storyboard */,
-				89705A991F2859E400F15BAC /* CustomLoginAlertView.xib */,
 				891766AB1F20AED8003ACCE7 /* Assets.xcassets */,
+				899B18741F2A1E9D0087679A /* loading_fast.gif */,
+				89705A9F1F29522700F15BAC /* OnTheMap.entitlements */,
 				891766B01F20AED8003ACCE7 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -129,7 +129,6 @@
 				89705A931F27FA2200F15BAC /* API */,
 				891766BC1F2186A1003ACCE7 /* StudentInformation.swift */,
 				89705A951F27FA4600F15BAC /* Constants.swift */,
-				89705A971F280E2300F15BAC /* Utils.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -137,8 +136,9 @@
 		891766BA1F20CE45003ACCE7 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				89705A9B1F285FA000F15BAC /* CustomLoginAlertView.swift */,
+				89705A9B1F285FA000F15BAC /* LoadingView.swift */,
 				893362B91F29C24700F3F6CC /* StudentInformationTableViewCell.swift */,
+				89705A971F280E2300F15BAC /* Utils.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -257,7 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				891766AF1F20AED8003ACCE7 /* LaunchScreen.storyboard in Resources */,
-				89705A9A1F2859E400F15BAC /* CustomLoginAlertView.xib in Resources */,
+				899B18751F2A1E9D0087679A /* loading_fast.gif in Resources */,
 				891766AC1F20AED8003ACCE7 /* Assets.xcassets in Resources */,
 				891766AA1F20AED8003ACCE7 /* Main.storyboard in Resources */,
 			);
@@ -326,7 +326,7 @@
 				891766C11F21FD14003ACCE7 /* ParseConvenience.swift in Sources */,
 				891766A51F20AED8003ACCE7 /* AppDelegate.swift in Sources */,
 				89705A8E1F269D5D00F15BAC /* LoginViewController.swift in Sources */,
-				89705A9C1F285FA000F15BAC /* CustomLoginAlertView.swift in Sources */,
+				89705A9C1F285FA000F15BAC /* LoadingView.swift in Sources */,
 				893362BA1F29C24700F3F6CC /* StudentInformationTableViewCell.swift in Sources */,
 				891766BF1F218878003ACCE7 /* APIClient.swift in Sources */,
 				89705A891F25A5EB00F15BAC /* UdacityConvenience.swift in Sources */,

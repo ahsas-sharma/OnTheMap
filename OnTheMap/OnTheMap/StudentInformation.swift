@@ -50,7 +50,13 @@ struct StudentInformation {
 
     }
     
-   func stringForHTTPBody() -> String {
+    // Return the string to be used for HTTPBody in POST requests
+   private func stringForHTTPBody() -> String {
     return "{\"uniqueKey\": \"\(self.uniqueKey)\", \"firstName\": \"\(self.firstName)\", \"lastName\": \"\(self.lastName)\",\"mapString\": \"\(self.mapString)\", \"mediaURL\": \"\(self.mediaURL)\",\"latitude\": \(self.latitude), \"longitude\": \(self.longitude)}"
+    }
+    
+    // Return the full name of student
+    func fullName() -> String {
+        return "\(self.firstName) \(self.lastName)"
     }
 }

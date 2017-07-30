@@ -10,17 +10,27 @@ import UIKit
 
 struct Constants {
     
+    static let reloadStudentLocationsData = "reloadStudentLocationsData"
+    
     struct Strings {
         
-        // LoginViewController
+        // LoginVC - Signup URL
+        static let udacitySignUpURL = "https://www.udacity.com/account/auth#!/signup"
+        
+        // LoginVC - Error messages
         static let invalidCredentialsTitle = "Invalid Credentials"
         static let invalidCredentialsMessage = "Please check your email and password."
         
-        static let connectionErrorTitle = "No Internet Connection"
-        static let connectionErroMessage = "Please check your network connection and try again."
+        static let connectionErrorTitle = "No connection"
+        static let connectionErroMessage = "Internet connection appears to be offline."
         
-        // PostInformationViewController
-        static let addressPlaceholder = "Enter your location"
+        // PostInformationVC - Placeholder text
+        static let enterYourLocation = "Enter your location"
+        static let enterLink = "Enter a link"
+        
+        // LoadingView - Status
+        static let loggingIn = "Logging in..."
+        static let fetchingLocations = "Fetching student locations..."
         
     }
     

@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import FacebookCore
+import FacebookLogin
 
 class APIClient : NSObject {
     
@@ -15,12 +17,18 @@ class APIClient : NSObject {
     
     var session = URLSession.shared
     
+    let loginManager = LoginManager()
+
     static var userId: String?
     static var sessionId: String?
     static var facebookAuthToken: String?
     
     static var studentLocations = [StudentInformation]()
-    static var locationsFetchInProgress: Bool = false
+//    static var reloadStudentLocationsData: Bool? {
+//        didSet{
+//            NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.reloadStudentLocationsData), object: self)
+//        }
+//    }
     
     let parseHeaders = [APIConstants.HTTP.HeaderKeys.parseApiKey:APIConstants.Parse.apiKey, APIConstants.HTTP.HeaderKeys.parseAppId: APIConstants.Parse.applicationID, APIConstants.HTTP.HeaderKeys.contentType:APIConstants.HTTP.HeaderValues.json]
     
@@ -44,7 +52,8 @@ class APIClient : NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                self.sendError("There was an error with your request: \(error!)", code: 1, domain: "taskForMethod", completionHandler: completionHandlerForTask)
+                let error = error! as NSError
+                self.sendError("There was an error with your request", code: error.code, domain: error.domain, completionHandler: completionHandlerForTask)
                 return
             }
             
@@ -56,7 +65,7 @@ class APIClient : NSObject {
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                self.sendError("No data was returned by the request!", code: 2, domain: "taskForMethod", completionHandler: completionHandlerForTask)
+                self.sendError("No data was returned by the request!", code: 404, domain: "taskForMethod", completionHandler: completionHandlerForTask)
                 return
             }
             
@@ -75,10 +84,13 @@ class APIClient : NSObject {
         return task
     }
     
-    func buildRequestWith(methodType: APIConstants.HTTP.MethodType, host: APIConstants.Host, parameters: [String: String]?, headers:[String:String], requestBody: String?) -> NSMutableURLRequest {
+    func buildRequestWith(methodType: APIConstants.HTTP.MethodType, host: APIConstants.Host, parameters: [String: String]?, headers:[String:String], requestBody: String?) -> NSMutableURLRequest? {
         
         // create a new request and set the httpMethod
-        let request = NSMutableURLRequest(url: self.buildURLFor(host: host, parameters: parameters))
+        guard let url = self.buildURLFor(host: host, parameters: parameters) else {
+            return nil
+        }
+        let request = NSMutableURLRequest(url: url)
         request.httpMethod = methodType.rawValue
         
         // check if there is any json data is provided
@@ -99,7 +111,7 @@ class APIClient : NSObject {
     
     // MARK:- Helper functions
     
-    private func buildURLFor(host: APIConstants.Host, parameters: [String: String]?) -> URL {
+    private func buildURLFor(host: APIConstants.Host, parameters: [String: String]?) -> URL? {
         
         var components = URLComponents()
         
@@ -120,12 +132,10 @@ class APIClient : NSObject {
                 let queryItem = URLQueryItem(name: key, value: "\(value)")
                 components.queryItems!.append(queryItem)
             }
-            print("URL: \(components.url!.absoluteString)")
-            return components.url!
+            return components.url
         } else {
             components.queryItems = nil
-            print("URL: \(components.url!.absoluteString)")
-            return components.url!
+            return components.url
         }
     }
     
@@ -152,7 +162,9 @@ class APIClient : NSObject {
     
     // send error for domain
     private func sendError(_ error: String, code: Int, domain: String, completionHandler: completionHandler) {
-        print(error)
+        print("------------------------------------------------")
+        print("Sending error code:\(code) for domain: \(domain)")
+        print("------------------------------------------------")
         let userInfo = [NSLocalizedDescriptionKey : error]
         completionHandler(nil, NSError(domain: domain, code: code, userInfo: userInfo))
         
