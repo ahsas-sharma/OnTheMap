@@ -111,6 +111,10 @@ struct APIConstants {
             static let id = "id"
             static let expiration = "expiration"
             
+            static let user = "user"
+            static let firstName = "first_name"
+            static let lastName = "last_name"
+            
         }
         
         

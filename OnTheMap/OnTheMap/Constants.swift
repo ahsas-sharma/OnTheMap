@@ -10,19 +10,12 @@ import UIKit
 
 struct Constants {
     
-    static let reloadStudentLocationsData = "reloadStudentLocationsData"
+    // MARK: - String Literals -
     
     struct Strings {
         
         // LoginVC - Signup URL
         static let udacitySignUpURL = "https://www.udacity.com/account/auth#!/signup"
-        
-        // LoginVC - Error messages
-        static let invalidCredentialsTitle = "Invalid Credentials"
-        static let invalidCredentialsMessage = "Please check your email and password."
-        
-        static let connectionErrorTitle = "No connection"
-        static let connectionErroMessage = "Internet connection appears to be offline."
         
         // PostInformationVC - Placeholder text
         static let enterYourLocation = "Enter your location"
@@ -32,7 +25,30 @@ struct Constants {
         static let loggingIn = "Logging in..."
         static let fetchingLocations = "Fetching student locations..."
         
+        // MARK: - Error Titles and Messages -
+        
+        struct Errors {
+
+            // Invalid credentials
+            static let invalidCredentialsTitle = "Invalid Credentials"
+            static let invalidCredentialsMessage = "Please check your email and password."
+            
+            // No Internet Connection
+            static let connectionErrorTitle = "Unable to connect"
+            static let connectionErroMessage = "Internet connection appears to be offline."
+            
+            // Geocoding Failed
+            static let geocodingFailedTitle = "Geocoding failed"
+            static let geocodingFailedMessage = "Unable to find coordinates for the location."
+            
+            // No result data
+            static let noResultTitle = "No data received"
+            static let noResultMessage = "The server did not return any data."
+        }
+        
     }
+    
+    // MARK: - Colors -
     
     struct Color {
         static let flatGreenDark = UIColor(red: 49/255, green: 163/255, blue: 67/255, alpha: 1.0)

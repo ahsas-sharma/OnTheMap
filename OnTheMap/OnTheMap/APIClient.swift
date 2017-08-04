@@ -15,23 +15,28 @@ class APIClient : NSObject {
     
     // MARK:- Properties
     
+    // store shared URLSession
     var session = URLSession.shared
     
+    // facebook login manager
     let loginManager = LoginManager()
 
+    // authentication
     static var userId: String?
     static var sessionId: String?
     static var facebookAuthToken: String?
     
+    // studentInformation
     static var studentLocations = [StudentInformation]()
-//    static var reloadStudentLocationsData: Bool? {
-//        didSet{
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.reloadStudentLocationsData), object: self)
-//        }
-//    }
+    static var activeStudentDict: [String: AnyObject]?
+    static var activeStudentInformation: StudentInformation?
     
-    let parseHeaders = [APIConstants.HTTP.HeaderKeys.parseApiKey:APIConstants.Parse.apiKey, APIConstants.HTTP.HeaderKeys.parseAppId: APIConstants.Parse.applicationID, APIConstants.HTTP.HeaderKeys.contentType:APIConstants.HTTP.HeaderValues.json]
+    // index of activeStudentInformation object in the studentLocations array
+    static var activeStudentInformationIndex: Int?
     
+    // prefix to be added for generating unique keys
+    static var postPrefixCount = 0
+
     typealias completionHandler = (_ result: AnyObject?, _ error: NSError?) -> Void
     
     // MARK:- Shared APIClient Instance
@@ -44,8 +49,15 @@ class APIClient : NSObject {
     }
     
     
-    // MARK: Task
+    // MARK: Task -
     
+    
+    /// This is a common function that can be used to generate a data task for performing all networking activites
+    ///
+    /// - Parameters:
+    ///   - request: URLRequest to create the task
+    ///   - completionHandlerForTask: Completion Handler that returns result and error
+    /// - Returns: URLSessionDataTask
     func taskForMethod(request: URLRequest, completionHandlerForTask: @escaping completionHandler) -> URLSessionDataTask {
         
         let task = session.dataTask(with: request, completionHandler: { (data, response, error) in
@@ -84,6 +96,16 @@ class APIClient : NSObject {
         return task
     }
     
+    
+    /// This is a common function that builds a NSMutableURLRequest based on the options passed through paramters
+    ///
+    /// - Parameters:
+    ///   - methodType: HTTP Method Type (GET, POST, PUT, DELETE)
+    ///   - host: Hostname to connect to
+    ///   - parameters: Method parameters
+    ///   - headers: HTTP headers to pass with the request
+    ///   - requestBody: HTTPBody for the request
+    /// - Returns: An NSMutableURLRequest object that can be passed to a data task.
     func buildRequestWith(methodType: APIConstants.HTTP.MethodType, host: APIConstants.Host, parameters: [String: String]?, headers:[String:String], requestBody: String?) -> NSMutableURLRequest? {
         
         // create a new request and set the httpMethod
@@ -111,6 +133,13 @@ class APIClient : NSObject {
     
     // MARK:- Helper functions
     
+    
+    /// Builds the URL using the host and parameters passed from arguments
+    ///
+    /// - Parameters:
+    ///   - host: .Parse or .Udacity
+    ///   - parameters: Dictionary containing the parameters for the query
+    /// - Returns: An optional URL object that can be used to generate a request
     private func buildURLFor(host: APIConstants.Host, parameters: [String: String]?) -> URL? {
         
         var components = URLComponents()
@@ -139,13 +168,6 @@ class APIClient : NSObject {
         }
     }
     
-    
-    // substitute the key for the value that is contained within the method name
-    private func urlForUserDataWithUserId(_ userId: String) -> String? {
-        return APIConstants.Udacity.urlForUserData.appending("\(userId)")
-    }
-    
-    
     // convert raw JSON into a usable Foundation object
     private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: completionHandler) {
         
@@ -162,9 +184,6 @@ class APIClient : NSObject {
     
     // send error for domain
     private func sendError(_ error: String, code: Int, domain: String, completionHandler: completionHandler) {
-        print("------------------------------------------------")
-        print("Sending error code:\(code) for domain: \(domain)")
-        print("------------------------------------------------")
         let userInfo = [NSLocalizedDescriptionKey : error]
         completionHandler(nil, NSError(domain: domain, code: code, userInfo: userInfo))
         

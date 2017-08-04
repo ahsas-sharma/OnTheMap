@@ -80,14 +80,17 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="selected">
-                                    <color key="titleColor" red="0.68888300657272339" green="0.71366006135940552" blue="0.73448425531387329" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="facebookLoginButtonClicked:" destination="F8u-ek-c0g" eventType="touchUpInside" id="zvO-QA-GYs"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="vej-71-JrU" userLabel="Udacity Branding">
-                                <rect key="frame" x="113" y="100" width="150" height="114"/>
+                                <rect key="frame" x="112.5" y="100" width="150" height="114"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-u" translatesAutoresizingMaskIntoConstraints="NO" id="v2G-ir-Cx6">
                                         <rect key="frame" x="45" y="0.0" width="60" height="60"/>
@@ -104,15 +107,11 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G8m-KU-SVe" userLabel="LoadingView" customClass="LoadingView" customModule="OnTheMap" customModuleProvider="target">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G8m-KU-SVe" userLabel="LoadingView" customClass="LoadingView" customModule="OnTheMap" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aYq-Kg-X9g" userLabel="BackgroundView">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                        <color key="backgroundColor" red="0.1450980392" green="0.63137254899999995" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
-                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="A4Y-vj-FSy">
-                                        <rect key="frame" x="10" y="288" width="355" height="93"/>
+                                        <rect key="frame" x="10" y="287" width="355" height="93"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="R6q-r9-4Y5" userLabel="LoadingAnimationImageView">
                                                 <rect key="frame" x="152.5" y="0.0" width="50" height="50"/>
@@ -130,17 +129,13 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.1450980392" green="0.63137254899999995" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="A4Y-vj-FSy" firstAttribute="centerY" secondItem="G8m-KU-SVe" secondAttribute="centerY" id="7Xe-Ag-PYE"/>
-                                    <constraint firstItem="aYq-Kg-X9g" firstAttribute="top" secondItem="G8m-KU-SVe" secondAttribute="top" id="BN1-UJ-Fzj"/>
-                                    <constraint firstAttribute="trailing" secondItem="aYq-Kg-X9g" secondAttribute="trailing" id="I2u-Ac-aeU"/>
-                                    <constraint firstItem="aYq-Kg-X9g" firstAttribute="leading" secondItem="G8m-KU-SVe" secondAttribute="leading" id="a8l-kg-QT4"/>
-                                    <constraint firstItem="A4Y-vj-FSy" firstAttribute="leading" secondItem="G8m-KU-SVe" secondAttribute="leading" constant="10" id="g56-SO-2mI"/>
-                                    <constraint firstAttribute="bottom" secondItem="aYq-Kg-X9g" secondAttribute="bottom" id="gyc-jB-mK8"/>
-                                    <constraint firstItem="A4Y-vj-FSy" firstAttribute="centerX" secondItem="G8m-KU-SVe" secondAttribute="centerX" id="hH9-aC-ssZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="A4Y-vj-FSy" secondAttribute="trailing" constant="10" id="uug-7T-Egk"/>
+                                    <constraint firstAttribute="trailing" secondItem="A4Y-vj-FSy" secondAttribute="trailing" constant="10" id="En9-2Q-F1m"/>
+                                    <constraint firstItem="A4Y-vj-FSy" firstAttribute="centerX" secondItem="G8m-KU-SVe" secondAttribute="centerX" id="JKk-jh-ngk"/>
+                                    <constraint firstItem="A4Y-vj-FSy" firstAttribute="centerY" secondItem="G8m-KU-SVe" secondAttribute="centerY" id="YK0-7q-CNP"/>
+                                    <constraint firstItem="A4Y-vj-FSy" firstAttribute="leading" secondItem="G8m-KU-SVe" secondAttribute="leading" constant="10" id="rSn-te-uo2"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="loadingImageView" destination="R6q-r9-4Y5" id="fkC-AO-wYu"/>
@@ -225,16 +220,16 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iyl-a3-X2A" userLabel="ListVCContainerView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                <connections>
+                                    <segue destination="Evi-YT-iHl" kind="embed" identifier="listTabSegue" id="F6w-WP-g2t"/>
+                                </connections>
+                            </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Usb-k2-nEl" userLabel="MapVCContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <connections>
                                     <segue destination="uQ5-Ax-TY6" kind="embed" identifier="mapTabSegue" id="gJm-sc-cPx"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iyl-a3-X2A" userLabel="ListVCContainerView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
-                                <connections>
-                                    <segue destination="Evi-YT-iHl" kind="embed" identifier="listTabSegue" id="F6w-WP-g2t"/>
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mgk-au-w2X" userLabel="LoadingView" customClass="LoadingView" customModule="OnTheMap" customModuleProvider="target">
@@ -510,10 +505,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qsv-dG-unx" userLabel="BottomViewFirst">
-                                <rect key="frame" x="0.0" y="533" width="375" height="133.5"/>
+                                <rect key="frame" x="0.0" y="533.5" width="375" height="133.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nsh-QP-PlT">
-                                        <rect key="frame" x="100" y="45" width="175" height="44"/>
+                                        <rect key="frame" x="100" y="45.5" width="175" height="44"/>
                                         <color key="backgroundColor" red="0.1450980392" green="0.63137254899999995" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="5SA-zv-JlG"/>
@@ -559,24 +554,11 @@
                                             <action selector="cancelButtonClicked:" destination="BVt-gG-BH9" eventType="touchUpInside" id="DQ7-Oh-RbD"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pap-w3-lrk">
-                                        <rect key="frame" x="8" y="20" width="102" height="33"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                        <state key="normal" title="Edit Location">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="disabled">
-                                            <color key="titleColor" red="0.68888300657272339" green="0.71366006135940552" blue="0.73448425531387329" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="editLocationButtonClicked:" destination="BVt-gG-BH9" eventType="touchUpInside" id="q2X-a8-lvl"/>
-                                        </connections>
-                                    </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Enter a link" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LIw-Zs-80Y">
                                         <rect key="frame" x="10" y="93" width="355" height="34"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="URL"/>
                                         <connections>
                                             <outlet property="delegate" destination="BVt-gG-BH9" id="f40-Qg-df2"/>
                                         </connections>
@@ -587,10 +569,8 @@
                                     <constraint firstAttribute="trailing" secondItem="LIw-Zs-80Y" secondAttribute="trailing" constant="10" id="5d1-JO-lpd"/>
                                     <constraint firstAttribute="trailing" secondItem="Chi-p9-KKg" secondAttribute="trailing" constant="8" id="7jL-PH-0rm"/>
                                     <constraint firstItem="Chi-p9-KKg" firstAttribute="top" secondItem="KeQ-VX-Ijt" secondAttribute="top" constant="20" id="7zw-65-Xc2"/>
-                                    <constraint firstItem="pap-w3-lrk" firstAttribute="leading" secondItem="KeQ-VX-Ijt" secondAttribute="leading" constant="8" id="TBO-m6-idf"/>
                                     <constraint firstItem="LIw-Zs-80Y" firstAttribute="leading" secondItem="KeQ-VX-Ijt" secondAttribute="leading" constant="10" id="UO3-b0-q98"/>
                                     <constraint firstItem="LIw-Zs-80Y" firstAttribute="centerY" secondItem="KeQ-VX-Ijt" secondAttribute="centerY" multiplier="1.1" id="bVe-Yf-voP"/>
-                                    <constraint firstItem="pap-w3-lrk" firstAttribute="top" secondItem="KeQ-VX-Ijt" secondAttribute="top" constant="20" id="fca-xB-sUz"/>
                                     <constraint firstItem="LIw-Zs-80Y" firstAttribute="centerX" secondItem="KeQ-VX-Ijt" secondAttribute="centerX" id="vTi-lO-aF3"/>
                                 </constraints>
                             </view>
@@ -601,10 +581,10 @@
                                 </connections>
                             </mapView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Bt-HD-1Fh" userLabel="BottomViewSecond">
-                                <rect key="frame" x="0.0" y="533" width="375" height="133.5"/>
+                                <rect key="frame" x="0.0" y="533.5" width="375" height="133.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="biU-iA-aV4">
-                                        <rect key="frame" x="100" y="45.5" width="175" height="44"/>
+                                        <rect key="frame" x="100" y="45" width="175" height="44"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Qpk-gM-XcG"/>
@@ -613,6 +593,9 @@
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                         <state key="normal" title="Submit">
                                             <color key="titleColor" red="0.1450980392" green="0.63137254899999995" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <state key="disabled">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="submitButtonClicked:" destination="BVt-gG-BH9" eventType="touchUpInside" id="liu-Dy-kKA"/>
@@ -655,6 +638,10 @@
                                     <constraint firstItem="Ai1-gz-vDw" firstAttribute="centerX" secondItem="zWd-XP-igo" secondAttribute="centerX" id="le9-ym-gmS"/>
                                     <constraint firstAttribute="trailing" secondItem="Ai1-gz-vDw" secondAttribute="trailing" constant="10" id="ql7-eg-2Lm"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="loadingImageView" destination="dwj-QW-T1F" id="pFV-Dn-r2M"/>
+                                    <outlet property="loadingLabel" destination="zdr-jM-c15" id="EkT-Nb-VTn"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.1450980392" green="0.63137254899999995" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -692,6 +679,7 @@
                         <outlet property="bottomViewFirst" destination="qsv-dG-unx" id="yz3-r4-sgM"/>
                         <outlet property="bottomViewSecond" destination="0Bt-HD-1Fh" id="FaJ-X8-Nps"/>
                         <outlet property="findOnMapButton" destination="Nsh-QP-PlT" id="CWy-zV-Aa4"/>
+                        <outlet property="loadingView" destination="zWd-XP-igo" id="YlG-9q-urP"/>
                         <outlet property="locationTextField" destination="cCZ-7S-X4s" id="J9j-hK-GIo"/>
                         <outlet property="mapView" destination="ReE-GW-MrS" id="0E4-uu-1uT"/>
                         <outlet property="mediaURLTextField" destination="LIw-Zs-80Y" id="8tU-gX-1cF"/>

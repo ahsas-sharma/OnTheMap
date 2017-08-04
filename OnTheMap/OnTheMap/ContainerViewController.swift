@@ -24,6 +24,8 @@ class ContainerViewController : UIViewController {
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet var loadingViewConstraints: [NSLayoutConstraint]!
     
+    var mapTabVC: MapTabViewController!
+    var listTabVC: ListTabTableViewController!
     
     
     let apiClient = APIClient()
@@ -38,12 +40,13 @@ class ContainerViewController : UIViewController {
         tabBar.selectedItem = mapTabBarItem
         loadingView.loadingLabel.text = Constants.Strings.fetchingLocations
         setViewVisibility(view: loadingView, hidden: true)
-        getStudentLocations()
+        loadingView.setBackground(withColor: loadingView.backgroundColor!, alpha: 0.85)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        getStudentLocations()
     }
     
     
@@ -66,7 +69,7 @@ class ContainerViewController : UIViewController {
                 let loginManager = self.apiClient.loginManager
                 loginManager.logOut()
                 if let token = FBSDKAccessToken.current() {
-                    print("Still got a token : \(token)")
+                    debugPrint("Still got a token : \(token)")
                 } else {
                     performUIUpdatesOnMain {
                         let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController")
@@ -79,11 +82,13 @@ class ContainerViewController : UIViewController {
     }
     
     @IBAction func presentPostInformationViewController() {
-        let postInformationVC = self.storyboard?.instantiateViewController(withIdentifier: "PostInformationViewController")
+        let postInformationVC = self.storyboard?.instantiateViewController(withIdentifier: "PostInformationViewController") as? PostInformationViewController
+        postInformationVC?.containerVC = self
         self.present(postInformationVC!, animated: true, completion: nil)
     }
     
     @IBAction func refreshStudentLocations() {
+        APIClient.studentLocations.removeAll()
         self.getStudentLocations()
     }
     
@@ -120,52 +125,26 @@ class ContainerViewController : UIViewController {
             self.mapTabDelegate?.refreshStudentLocations()
         })
     }
-    
+
+    // Store references to VC instances when segueing
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
         case "mapTabSegue":
             guard let mapTabVC = segue.destination as? MapTabViewController else {
                 return
             }
+            self.mapTabVC = mapTabVC
             mapTabVC.containerViewController = self
         case "listTabSegue":
             guard let listTabVC = segue.destination as? ListTabTableViewController else {
                 return
             }
+            self.listTabVC = listTabVC
             listTabVC.containerViewController = self
         default:
             debugPrint("Unknown segue identifier. What's going on here Chief?")
         }
     }
-    
-    /*
-        // Figure out the math of this
-     
-        private func makeCircularView(_ view: UIView) {
-            let frame = view.frame
-            print("Frame: \(String(describing:frame))")
-            let centerPoint = view.center
-    
-            let width = Double(frame.width)
-            let height = Double(frame.height)
-            let diagonal = sqrt((width * width) + (height  * height))
-            print("Diagonal: \(diagonal)")
-    
-            let newX = Double(frame.minX) - (diagonal/2)
-            print("New X : \(newX)")
-            let newY = Double(frame.minY) - (diagonal/2)
-            print("New Y : \(newY)")
-            let squareFrame = CGRect(x: newX, y: newY, width: diagonal, height: diagonal)
-            print("Square Frame: \(squareFrame)")
-            view.removeConstraints(loadingViewConstraints)
-            view.frame = squareFrame
-            view.layer.cornerRadius = min(view.frame.height, view.frame.width) / 2.0
-            print("Corner Radius: \(view.layer.cornerRadius)")
-            view.center = centerPoint
-            view.setNeedsLayout()
-            self.view.layoutIfNeeded()
-        }
-     */
     
 }
 
@@ -178,7 +157,13 @@ extension ContainerViewController : UITabBarDelegate {
     }
     
     func toggleViewControllers(selectedTab: UITabBarItem) {
-        swap(&self.listContainerView.alpha, &self.mapContainerView.alpha)
+        if selectedTab == mapTabBarItem {
+            mapContainerView.isHidden = false
+            listContainerView.isHidden = true
+        } else if selectedTab == listTabBarItem {
+            mapContainerView.isHidden = true
+            listContainerView.isHidden = false
+        }
     }
 }
 

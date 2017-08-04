@@ -26,8 +26,10 @@ class LoadingView : UIView {
     
     override func awakeFromNib() {
         prepareAnimations()
-
     }
+    
+    // MARK: - Helper -
+    
     func setBackground(withColor color: UIColor, alpha: CGFloat) {
         let alphaColor = color.withAlphaComponent(alpha)
         self.backgroundColor = alphaColor
@@ -49,8 +51,6 @@ class LoadingView : UIView {
         // label animation
         UIView.animate(withDuration: 2.0, delay: 0.0, options: [.repeat, .autoreverse, .curveEaseInOut], animations: {
             self.loadingLabel.alpha = 1.0
-//            sel.f.loadingLabel.alpha = 1.0
-//            self.loadingLabel.alpha = 0.0
         }, completion: nil)
     }
 }

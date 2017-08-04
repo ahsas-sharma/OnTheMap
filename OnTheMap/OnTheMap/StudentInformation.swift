@@ -27,8 +27,7 @@ struct StudentInformation {
     var updatedAt : String
     
     
-    // MARK: - Initialzier
-    
+    // MARK: - Initialziers
     init?(dict: [String: AnyObject]) {
 
         guard let objectId = dict["objectId"], let uniqueKey = dict["uniqueKey"], let firstName = dict["firstName"], let lastName = dict["lastName"], let mapString = dict["mapString"], let mediaURL = dict["mediaURL"], let latitude = dict["latitude"], let longitude = dict["longitude"], let createdAt = dict["createdAt"], let updatedAt = dict["updatedAt"] else {
@@ -47,10 +46,10 @@ struct StudentInformation {
         self.longitude = longitude as! Float
         self.createdAt = createdAt as! String
         self.updatedAt = updatedAt as! String
-
+        
     }
     
-    // Return the string to be used for HTTPBody in POST requests
+    // Return the string to be used for HTTPBody in PUT requests
    private func stringForHTTPBody() -> String {
     return "{\"uniqueKey\": \"\(self.uniqueKey)\", \"firstName\": \"\(self.firstName)\", \"lastName\": \"\(self.lastName)\",\"mapString\": \"\(self.mapString)\", \"mediaURL\": \"\(self.mediaURL)\",\"latitude\": \(self.latitude), \"longitude\": \(self.longitude)}"
     }
@@ -59,4 +58,7 @@ struct StudentInformation {
     func fullName() -> String {
         return "\(self.firstName) \(self.lastName)"
     }
+    
+    
+    
 }

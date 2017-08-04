@@ -10,6 +10,8 @@ import UIKit
 
 class StudentInformationTableViewCell: UITableViewCell {
 
+    // MARK: - Outlets and Properties
+    
     @IBOutlet weak var markerImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var mediaURLLabel: UILabel!
@@ -24,12 +26,6 @@ class StudentInformationTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         markerImageView.tintColor = .white
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }

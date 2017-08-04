@@ -41,24 +41,24 @@ func presentCustomAlertForError(errorCode: Int, presentor: UIViewController) {
     var title: String = "", message : String = ""
     
     switch errorCode {
-    case -1009: // connection error
-        title = Constants.Strings.connectionErrorTitle
-        message = Constants.Strings.connectionErroMessage
+    case -1009, 2: // connection error
+        title = Constants.Strings.Errors.connectionErrorTitle
+        message = Constants.Strings.Errors.connectionErroMessage
     case 8: // Geocoding failed
-        title = "Geocoding failed"
-        message = "Unable to find coordinates for the location."
+        title = Constants.Strings.Errors.geocodingFailedTitle
+        message = Constants.Strings.Errors.geocodingFailedMessage
     case 403: // invalid login credentials
-        title = Constants.Strings.invalidCredentialsTitle
-        message = Constants.Strings.invalidCredentialsMessage
+        title = Constants.Strings.Errors.invalidCredentialsTitle
+        message = Constants.Strings.Errors.invalidCredentialsMessage
     case 404: // no result data
-        title = "No data received"
-        message = "The server did not return any data."
-    case 400: // error generating the request
-        title = "Bad request"
-        message = "Unable to generate the request."
+        title = Constants.Strings.Errors.noResultTitle
+        message = Constants.Strings.Errors.noResultMessage
     default:
         ()
     }
+    
+    //DEBUG
+    debugPrint("Sending title: \(title), message:\(message) for code: \(errorCode)")
     
     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
     let okAction = UIAlertAction(title: "Dismiss", style: .default, handler: {

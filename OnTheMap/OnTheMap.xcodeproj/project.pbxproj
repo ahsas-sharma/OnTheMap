@@ -101,6 +101,7 @@
 			children = (
 				89705A8A1F269B0E00F15BAC /* Frameworks */,
 				891766A41F20AED8003ACCE7 /* AppDelegate.swift */,
+				89705A971F280E2300F15BAC /* Utils.swift */,
 				891766B71F20CE11003ACCE7 /* Model */,
 				891766BA1F20CE45003ACCE7 /* View */,
 				891766BB1F20CE4B003ACCE7 /* Controller */,
@@ -138,7 +139,6 @@
 			children = (
 				89705A9B1F285FA000F15BAC /* LoadingView.swift */,
 				893362B91F29C24700F3F6CC /* StudentInformationTableViewCell.swift */,
-				89705A971F280E2300F15BAC /* Utils.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";

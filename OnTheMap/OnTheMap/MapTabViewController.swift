@@ -15,13 +15,29 @@ class MapTabViewController: UIViewController, MKMapViewDelegate {
     
     var containerViewController: ContainerViewController!
     var annotations = [MKPointAnnotation]()
+    
     let apiClient = APIClient()
     
+    // Store the region for active user's coordinates. For use after postInformation process.
+    var activeUserRegion: CLRegion!
+    var userCoordinates: CLLocationCoordinate2D!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         containerViewController.mapTabDelegate = self
         addAnnotationsToMapView(withLocations: APIClient.studentLocations)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // If current user's coordinates are available, set the region to center mapview on it
+        if let coordinates = userCoordinates {
+            // set the region
+            let span = MKCoordinateSpanMake(20.000, 20.000)
+            let region =  MKCoordinateRegion(center: coordinates, span: span)
+            self.mapView.setRegion(region, animated: true)
+        }
     }
     
     func addAnnotationsToMapView(withLocations locations:[StudentInformation]) {
@@ -64,8 +80,11 @@ class MapTabViewController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.shared
-            if let toOpen = view.annotation?.subtitle! {
-                app.open(URL(string: toOpen)!, options: [:], completionHandler: { (success) in
+            if let urlString = view.annotation?.subtitle! {
+                guard let url = URL(string:urlString) else {
+                    return
+                }
+                app.open(url, options: [:], completionHandler: { (success) in
                     // nothing really to do out here
                 })
             }

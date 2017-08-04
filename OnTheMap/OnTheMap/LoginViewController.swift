@@ -32,24 +32,26 @@ class LoginViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup loading view
+        loadingView.loadingLabel.text = "Logging in ..."
+        loadingView.setBackground(withColor: loadingView.backgroundColor!, alpha: 0.85)
+        setViewVisibility(view: loadingView, hidden: true)
+
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
+        // 
         roundButtonCorners(udacityLoginButton)
         roundButtonCorners(facebookLoginButton)
         toggleLoginButtonState(enabled: false)
-        
-        setViewVisibility(view: loadingView, hidden: true)
-        loadingView.loadingLabel.text = "Logging in ..."
-        
+                
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Subscribe to be notified when keyboard appears and move the view as necessary
         self.subscribeToKeyboardNotifications()
-        
-        
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -74,10 +76,10 @@ class LoginViewController : UIViewController {
                 self.storeLoginResponseDetails(userId: userId!, sessionId: sessionId!, facebookAuthToken: nil)
                 self.presentContainerNavigationController()
             } else {
-                self.setUIEnabled(enabled: true)
                 presentCustomAlertForError(errorCode: (error?.code)!, presentor: self)
             }
             
+            self.setUIEnabled(enabled: true)
             setViewVisibility(view: self.loadingView, hidden: true)
         })
         
@@ -93,33 +95,34 @@ class LoginViewController : UIViewController {
     
     // TODO: - Refactor UI state code
     @IBAction func facebookLoginButtonClicked(_ sender: Any) {
-        setUIEnabled(enabled: false)
+        debugPrint("Clicked facebook login")
         showNetworkActivityIndicator()
-        setViewVisibility(view: loadingView, hidden: false)
-        
+        self.setUIEnabled(enabled: false)
+        setViewVisibility(view: self.loadingView, hidden: false)
         let loginManager = self.apiClient.loginManager
         loginManager.logIn([.publicProfile], viewController: self, completion: {
             loginResult in
-            
             switch loginResult {
             case .failed(let error):
+                setViewVisibility(view: self.loadingView, hidden: true)
                 presentCustomAlertForError(errorCode: ((error as NSError).code), presentor: self)
             case .cancelled:
-                print("User cancelled login.")
+                setViewVisibility(view: self.loadingView, hidden: true)
+                debugPrint("User cancelled login.")
             case .success(_, _, let accessToken):
                 self.apiClient.getSessionIdWithFacebook(accessToken: accessToken.authenticationToken, completionHandlerForGetSessionId: {
                     (success, userId, sessionId, error) in
-                    hideNetworkActivityIndicator()
                     if success {
                         self.storeLoginResponseDetails(userId: userId!, sessionId: sessionId!, facebookAuthToken: accessToken.authenticationToken)
                         self.presentContainerNavigationController()
                     } else {
                         presentCustomAlertForError(errorCode: (error?.code)!, presentor: self)
                     }
+                    setViewVisibility(view: self.loadingView, hidden: true)
                 })
             }
-            setViewVisibility(view: self.loadingView, hidden: true)
             self.setUIEnabled(enabled: true)
+            hideNetworkActivityIndicator()
         })
     }
     
@@ -170,33 +173,7 @@ class LoginViewController : UIViewController {
             self.facebookLoginButton.isEnabled = enabled
         }
     }
-//    MOVED TO UTILS
-//    private func presentCustomAlertForError(errorCode: Int) {
-//        var title: String = "", message : String = ""
-//        
-//        if errorCode == 403 {
-//            title = Constants.Strings.invalidCredentialsTitle
-//            message = Constants.Strings.invalidCredentialsMessage
-//        } else if errorCode == 1 {
-//            title = Constants.Strings.connectionErrorTitle
-//            message = Constants.Strings.connectionErroMessage
-//        }
-//        
-//        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "Dismiss", style: .default, handler: {
-//            (action) in
-//            self.dismiss(animated: true, completion: nil)
-//        })
-//        alert.addAction(okAction)
-//        
-//        // customize appearance
-//        alert.view.backgroundColor = .white
-//        alert.view.layer.cornerRadius = 15
-//        
-//        performUIUpdatesOnMain {
-//            self.present(alert, animated: true, completion: nil)
-//        }
-//    }
+
     
     private func createLoginString() -> String {
         return "{\"udacity\": {\"username\": \"\(emailTextField.text!)\", \"password\": \"\(passwordTextField.text!)\"}}"
