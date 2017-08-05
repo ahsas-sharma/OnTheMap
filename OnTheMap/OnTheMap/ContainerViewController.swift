@@ -28,7 +28,8 @@ class ContainerViewController : UIViewController {
     var listTabVC: ListTabTableViewController!
     
     
-    let apiClient = APIClient()
+    let apiClient = APIClient.sharedInstance()
+    let studentLocations = StudentLocations.sharedInstance()
     
     weak var listTabDelegate: ContainerViewDelegate?
     weak var mapTabDelegate: ContainerViewDelegate?
@@ -53,9 +54,9 @@ class ContainerViewController : UIViewController {
     // Adjusts the navigation bar height based on the orientation (as status bar is hidden in landscape mode on phone)
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if UIDevice.current.orientation.isLandscape {
-            self.navigationController?.navigationBar.frame.size.height = 44
+            navigationController?.navigationBar.frame.size.height = 44
         } else {
-            self.navigationController?.navigationBar.frame.size.height = 64
+            navigationController?.navigationBar.frame.size.height = 64
         }
     }
     
@@ -72,9 +73,7 @@ class ContainerViewController : UIViewController {
                     debugPrint("Still got a token : \(token)")
                 } else {
                     performUIUpdatesOnMain {
-                        let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController")
-                        self.present(loginVC!, animated: true, completion: {
-                        })
+                        self.dismiss(animated: true, completion: nil)
                     }
                 }
             }
@@ -88,7 +87,7 @@ class ContainerViewController : UIViewController {
     }
     
     @IBAction func refreshStudentLocations() {
-        APIClient.studentLocations.removeAll()
+        self.studentLocations.array.removeAll()
         self.getStudentLocations()
     }
     
@@ -116,13 +115,14 @@ class ContainerViewController : UIViewController {
                     debugPrint("StudentInformation initializer failed for location:\(location)")
                     continue
                 }
-                APIClient.studentLocations.append(student)
+                self.studentLocations.array.append(student)
             }
             
             // all UI updates performed on main
             setViewVisibility(view: self.loadingView, hidden: true)
             self.listTabDelegate?.refreshStudentLocations()
             self.mapTabDelegate?.refreshStudentLocations()
+            
         })
     }
 

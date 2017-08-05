@@ -26,7 +26,6 @@ struct StudentInformation {
     let createdAt : String
     var updatedAt : String
     
-    
     // MARK: - Initialziers
     init?(dict: [String: AnyObject]) {
 
@@ -58,7 +57,22 @@ struct StudentInformation {
     func fullName() -> String {
         return "\(self.firstName) \(self.lastName)"
     }
+
+}
+
+
+// MARK: - StudentLocations Array class
+class StudentLocations : NSObject {
     
+    // Store the array of StudentInformation structs
+    var array = [StudentInformation]()
     
-    
+    // Shared StudentLocations Instance
+    class func sharedInstance() -> StudentLocations {
+        struct Singleton {
+            static var sharedInstance = StudentLocations()
+        }
+        return Singleton.sharedInstance
+    }
+
 }

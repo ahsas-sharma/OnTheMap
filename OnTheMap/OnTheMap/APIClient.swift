@@ -65,13 +65,20 @@ class APIClient : NSObject {
             /* GUARD: Was there an error? */
             guard (error == nil) else {
                 let error = error! as NSError
-                self.sendError("There was an error with your request", code: error.code, domain: error.domain, completionHandler: completionHandlerForTask)
+                self.sendError("There was an error with the data task. Error: \(error) ", code: error.code, domain: error.domain, completionHandler: completionHandlerForTask)
                 return
             }
             
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                self.sendError("Your request returned a status code other than 2xx!. Code: \(String(describing: (response as? HTTPURLResponse)?.statusCode))", code: ((response as? HTTPURLResponse)?.statusCode)!, domain: "taskForMethod", completionHandler: completionHandlerForTask)
+                
+                var errorCode = ((response as? HTTPURLResponse)?.statusCode)!
+                
+                if request.url?.host == APIConstants.Parse.host &&  (response as? HTTPURLResponse)?.statusCode == 403 {
+                       errorCode = 40310
+                }
+                
+                self.sendError("Your request returned a status code other than 2xx!. Code: \(String(describing: (response as? HTTPURLResponse)?.statusCode))", code: errorCode, domain: "taskForMethod", completionHandler: completionHandlerForTask)
                 return
             }
             
@@ -184,9 +191,9 @@ class APIClient : NSObject {
     
     // send error for domain
     private func sendError(_ error: String, code: Int, domain: String, completionHandler: completionHandler) {
+        debugPrint("###### Sending Error String: \(error), Code : \(code)")
         let userInfo = [NSLocalizedDescriptionKey : error]
         completionHandler(nil, NSError(domain: domain, code: code, userInfo: userInfo))
-        
     }
     
 }

@@ -11,6 +11,7 @@ import UIKit
 class ListTabTableViewController: UITableViewController {
     
     var containerViewController: ContainerViewController!
+    let studentLocations = StudentLocations.sharedInstance()
     
     // MARK: - View Lifecyle
     override func viewDidLoad() {
@@ -32,7 +33,7 @@ class ListTabTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return APIClient.studentLocations.count
+        return studentLocations.array.count
     }
     
     
@@ -43,7 +44,7 @@ class ListTabTableViewController: UITableViewController {
         }
         
         // set the studentInformation object for the cell
-        cell.studentInformation = APIClient.studentLocations[indexPath.row]
+        cell.studentInformation = studentLocations.array[indexPath.row]
         return cell
     }
     

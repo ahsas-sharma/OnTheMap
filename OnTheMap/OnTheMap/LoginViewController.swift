@@ -21,7 +21,7 @@ class LoginViewController : UIViewController {
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var loadingView: LoadingView!
     
-    let apiClient = APIClient()
+    let apiClient = APIClient.sharedInstance()
     var viewFrameOriginY: CGFloat!
 
     // Enable login button if both email and password validation returns true
@@ -40,7 +40,6 @@ class LoginViewController : UIViewController {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
-        // 
         roundButtonCorners(udacityLoginButton)
         roundButtonCorners(facebookLoginButton)
         toggleLoginButtonState(enabled: false)
@@ -182,7 +181,9 @@ class LoginViewController : UIViewController {
     private func presentContainerNavigationController() {
         performUIUpdatesOnMain {
             let containerNavigationController = self.storyboard?.instantiateViewController(withIdentifier: "ContainerNavigationController") as! UINavigationController
-            self.present(containerNavigationController, animated: true, completion: nil)
+            self.present(containerNavigationController, animated: true, completion: {
+                setViewVisibility(view: self.loadingView, hidden: true)
+            })
         }
       
     }

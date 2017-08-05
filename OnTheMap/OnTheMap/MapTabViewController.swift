@@ -16,7 +16,8 @@ class MapTabViewController: UIViewController, MKMapViewDelegate {
     var containerViewController: ContainerViewController!
     var annotations = [MKPointAnnotation]()
     
-    let apiClient = APIClient()
+    let apiClient = APIClient.sharedInstance()
+    let studentLocations = StudentLocations.sharedInstance()
     
     // Store the region for active user's coordinates. For use after postInformation process.
     var activeUserRegion: CLRegion!
@@ -25,12 +26,13 @@ class MapTabViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         containerViewController.mapTabDelegate = self
-        addAnnotationsToMapView(withLocations: APIClient.studentLocations)
+        addAnnotationsToMapView(withLocations: studentLocations.array)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         // If current user's coordinates are available, set the region to center mapview on it
         if let coordinates = userCoordinates {
             // set the region
@@ -98,7 +100,7 @@ extension MapTabViewController : ContainerViewDelegate {
     func refreshStudentLocations() {
         performUIUpdatesOnMain {
             self.mapView.removeAnnotations(self.annotations)
-            self.addAnnotationsToMapView(withLocations: APIClient.studentLocations)
+            self.addAnnotationsToMapView(withLocations: self.studentLocations.array)
         }
        
     }

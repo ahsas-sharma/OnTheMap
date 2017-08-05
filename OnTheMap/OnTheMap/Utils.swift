@@ -53,12 +53,15 @@ func presentCustomAlertForError(errorCode: Int, presentor: UIViewController) {
     case 404: // no result data
         title = Constants.Strings.Errors.noResultTitle
         message = Constants.Strings.Errors.noResultMessage
+    case 40310:
+        title = Constants.Strings.Errors.invalidConfigurationTitle
+        message = Constants.Strings.Errors.invalidConfigurationMessage
     default:
         ()
     }
     
     //DEBUG
-    debugPrint("Sending title: \(title), message:\(message) for code: \(errorCode)")
+    debugPrint("**** PresentCustomAlertForError(), Title: \(title), message:\(message) for code: \(errorCode)")
     
     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
     let okAction = UIAlertAction(title: "Dismiss", style: .default, handler: {

@@ -33,6 +33,10 @@ struct Constants {
             static let invalidCredentialsTitle = "Invalid Credentials"
             static let invalidCredentialsMessage = "Please check your email and password."
             
+            // Invalid Configuration
+            static let invalidConfigurationTitle = "Invalid Configuration"
+            static let invalidConfigurationMessage = "The server has rejected the request. Please contact customer support."
+            
             // No Internet Connection
             static let connectionErrorTitle = "Unable to connect"
             static let connectionErroMessage = "Internet connection appears to be offline."

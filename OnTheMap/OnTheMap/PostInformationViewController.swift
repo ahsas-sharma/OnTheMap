@@ -28,11 +28,14 @@ class PostInformationViewController : UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var loadingView: LoadingView!
     
-    let apiClient = APIClient()
+    let apiClient = APIClient.sharedInstance()
+    let studentLocations = StudentLocations.sharedInstance()
     var currentCoordinates: CLLocationCoordinate2D!
     var currentRegion: CLRegion!
     var activeStudentDict = [String: AnyObject]()
     var containerVC: ContainerViewController!
+    var viewFrameOriginY: CGFloat!
+
     
     // MARK: - View Life cycle
     
@@ -62,8 +65,17 @@ class PostInformationViewController : UIViewController {
             locationTextField.text = Constants.Strings.enterYourLocation
             mediaURLTextField.text = Constants.Strings.enterLink
         }
+        
+        self.subscribeToKeyboardNotifications()
+
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        self.unsubscribeToKeyboardNotifications()
+
+    }
     
     // MARK: - Actions -
     
@@ -111,13 +123,13 @@ class PostInformationViewController : UIViewController {
                     APIClient.activeStudentInformation?.updatedAt = updatedAt
                     
                     //if the index exists, remove the object in studentLocations array
-                    if APIClient.activeStudentInformationIndex! < APIClient.studentLocations.count {
-                        APIClient.studentLocations.remove(at: APIClient.activeStudentInformationIndex!)
+                    if APIClient.activeStudentInformationIndex! < self.studentLocations.array.count {
+                        self.studentLocations.array.remove(at: APIClient.activeStudentInformationIndex!)
                     }
                     
                     // add the new item
                     APIClient.studentLocations.append(APIClient.activeStudentInformation!)
-                    APIClient.activeStudentInformationIndex = APIClient.studentLocations.endIndex - 1
+                    APIClient.activeStudentInformationIndex = self.studentLocations.array.endIndex - 1
                     self.containerVC.mapTabVC.activeUserRegion = self.currentRegion
                     performUIUpdatesOnMain {
                         self.dismiss(animated: true, completion: {
@@ -151,8 +163,8 @@ class PostInformationViewController : UIViewController {
                     }
                     APIClient.activeStudentInformation = studentInformation
                     
-                    APIClient.studentLocations.append(studentInformation)
-                    APIClient.activeStudentInformationIndex = APIClient.studentLocations.endIndex - 1
+                    self.studentLocations.array.append(studentInformation)
+                    APIClient.activeStudentInformationIndex = self.studentLocations.array.endIndex - 1
                     self.containerVC.mapTabVC.activeUserRegion = self.currentRegion
                     performUIUpdatesOnMain {
                         self.dismiss(animated: true, completion: {
@@ -207,6 +219,43 @@ class PostInformationViewController : UIViewController {
         })
     }
     
+    // MARK:- Keyboard -
+    
+    /// Move up the main view by the height of the keyboard
+    func keyboardWillShow(_ notification: NSNotification) {
+        viewFrameOriginY = view.frame.origin.y
+        if locationTextField.isFirstResponder {
+            view.frame.origin.y = getKeyboardHeight(notification) * (-1) + 64
+        }
+    }
+    
+    /// Return frame to its original position
+    func keyboardWillHide(_ notification: NSNotification) {
+        if let viewFrameOriginY = viewFrameOriginY {
+            view.frame.origin.y = viewFrameOriginY
+        }
+    }
+    
+    /// Return the height of keyboard's frame using the notification
+    func getKeyboardHeight(_ notification: NSNotification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo?[UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.cgRectValue.height
+    }
+    
+    /// Subscribe to get notified when the keyboard is about to show or hide
+    func subscribeToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    /// Unsubscribe from keyboard notification
+    func unsubscribeToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    
     // MARK: - Helper -
     
     func generateRequestBody(completionHandler: @escaping (_ body: String?, _ error: NSError?) -> Void) {
@@ -222,6 +271,12 @@ class PostInformationViewController : UIViewController {
         } else {
             
             apiClient.getPublicDataForUser(id: APIClient.userId!, completionHandlerForGetPublicData: { (success, result, error) in
+                
+                guard error == nil else {
+                    completionHandler(nil, error)
+                    return
+                }
+                
                 if let result = result,
                     let user = result[APIConstants.Udacity.JSONResponseKeys.user] as? [String: AnyObject],
                     let firstName = user[APIConstants.Udacity.JSONResponseKeys.firstName] as? String,
